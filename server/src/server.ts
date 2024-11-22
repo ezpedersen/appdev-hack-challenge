@@ -16,9 +16,9 @@ app.get("/", (_req, res) => {
 
 import User from "../model/User.ts";
 //get specific user by id
-app.get('/user/:uid', async (req, res) =>{
-    const {uid} = req.params;
-    const user = await User.findOne({id: uid});
+app.get('/user/:netid', async (req, res) =>{
+    const {netid} = req.params;
+    const user = await User.findOne({id: netid});
 
     if (!user){
         res.status(404).json({error: "user not found"});
