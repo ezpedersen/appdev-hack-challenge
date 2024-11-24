@@ -5,8 +5,8 @@ const userSchema = new Schema({
    netid: {type: String, unique: true, required:true},
    // profile picture
    bio: {type: String, default:""},
-   borrowedItems: [{type: Schema.Types.ObjectId, ref: "Item"}],
-   lentItems: [{type: Schema.Types.ObjectId, ref: "Item"}]
+   wantedItems: [{type: Schema.Types.ObjectId, ref: "Item"}],
+   offeredItems: [{type: Schema.Types.ObjectId, ref: "Item"}]
 },
 {timestamps: true});
 
