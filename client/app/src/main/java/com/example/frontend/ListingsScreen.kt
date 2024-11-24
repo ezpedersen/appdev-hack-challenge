@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+@Preview(showBackground = true)
 @Composable
 fun ListingsScreen() {
     LazyColumn (
