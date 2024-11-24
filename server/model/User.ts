@@ -6,7 +6,8 @@ const userSchema = new Schema({
    // profile picture
    bio: {type: String, default:""},
    wantedItems: [{type: Schema.Types.ObjectId, ref: "Item"}],
-   offeredItems: [{type: Schema.Types.ObjectId, ref: "Item"}]
+   offeredItems: [{type: Schema.Types.ObjectId, ref: "Item"}],
+   friendList: [{type: Schema.Types.ObjectId, ref: "User"}]
 },
 {timestamps: true});
 
