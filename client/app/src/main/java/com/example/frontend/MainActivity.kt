@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavBackStackEntry
 import com.example.frontend.ui.theme.FrontendTheme
+import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,3 +27,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Serializable
+sealed class Screen {
+    data object ProfileScreen: Screen()
+    data object ListingsScreen: Screen()
+}
