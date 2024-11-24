@@ -17,6 +17,25 @@ app.get("/", (_req, res) => {
     res.status(200).send("Testing")
 })
 
+//get user by id
+app.get("/users/:netid", async (req, res) => {
+  const netid = req.params.netid;
+  try{
+    const user = await User.findOne({netid});
+ 
+ 
+    if (!user) return res.status(404).json({error: "user not found"});
+ 
+ 
+    res.status(200).json(user)
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal Server Error" });
+  }
+ })
+ 
+//get all users
 app.get('/users/', async (req,res)=>{
   try{
     const users = await User.find()
@@ -30,7 +49,7 @@ app.get('/users/', async (req,res)=>{
 });
 
 
-
+//create a user
 app.post("/users/", async (req, res) => {
   try {
     const { name, netid, bio = "" } = req.body;
@@ -58,7 +77,7 @@ app.post("/users/", async (req, res) => {
   }
 });
 
-
+//delete a user
 app.delete("/users/:netid/", async (req, res) => {
   try {
     const netid = req.params.netid;
@@ -79,6 +98,120 @@ app.delete("/users/:netid/", async (req, res) => {
   }
 });
 
+//edit user profile
+app.put("/users/profile/:netid", async (req, res) => {
+  const netid  = req.params.netid;
+  const { name, bio } = req.body;
+ 
+ 
+  if (!name && !bio){
+    return res.status(400).json({ error: "Please provide name or bio" });
+  }
+ 
+ 
+  try {
+    const user = await User.findOne({netid});
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+ 
+ 
+    if (name) {
+      user.name = name;}
+    if (bio){
+      user.bio = bio;}
+    await user.save();
+ 
+ 
+    res.status(200).json({user});
+ 
+ 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+ });
+ 
+ 
+ //deletes a friend
+ app.delete("/users/friend/:netid", async (req, res) => {
+  const netid = req.params.netid;
+  const {idToRemove } = req.body;
+ 
+ 
+  if (!idToRemove){
+    return res.status(400).json({ error: "Please provide netid to remove" });
+  }
+ 
+ 
+  try {
+    const user = await User.findOne({ netid });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+ 
+ 
+    const friendIndex = user.friendList.findIndex(idToRemove);
+ 
+ 
+    if (friendIndex === -1) {
+      return res.status(404).json({ error: "Friend not found" });
+    }
+ 
+ 
+    user.friendList.splice(friendIndex, 1);
+    await user.save();
+ 
+ 
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+ });
+ 
+ 
+ //adds a friend
+ app.post("/users/friend/:netid", async (req, res) =>{
+  const netid = req.params.netid;
+  const {idToAdd} = req.body;
+ 
+ 
+  if (!idToAdd){
+    return res.status(400).json({ error: "Please provide netid to add" });
+  }
+ 
+ 
+  try {
+    const user = await User.findOne({netid});
+    if (!user){
+      return res.status(404).json({error: "User not found"})}
+   
+   
+    if (user.friendList.includes(idToAdd.toString())) return res.status(404).json({error: "Friend already added!"})
+   
+    user.friendList.push(idToAdd);
+    await user.save();
+    res.status(200).json(user);
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({error: "Internal Server Error"});
+  }
+ })
+ 
+  //get all listsings 
+app.get("/listings/", async (req, res) => {
+  try{
+    const listings = await Listing.find();
+    res.status(200).json(listings);
+  }
+  catch (error){
+    console.error(error);
+    res.status(500).json({error: "Internal Server Error"});
+  }
+ })
+ 
 app.get("/listing/:id/", async(req,res)=>{
   try{
     const {id} = req.params;
