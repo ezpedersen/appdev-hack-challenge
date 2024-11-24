@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
@@ -58,7 +60,13 @@ class MainActivity : ComponentActivity() {
                     }
                 }) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-
+                        NavHost(
+                            navController = navController,
+                            startDestination = Screen.ListingsScreen
+                        ) {
+                            composable<Screen.ListingsScreen> { ListingsScreen() }
+                            composable<Screen.ProfileScreen> { ProfileScreen() }
+                        }
                     }
                 }
             }
