@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.appcompat:appcompat-resources:1.7.0")
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")

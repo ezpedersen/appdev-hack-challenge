@@ -68,7 +68,7 @@ fun MyListingsScreen() {
 fun Listing() {
     Box(modifier = Modifier
         .background(Color.Green)
-        .size(100.dp)
+        .size(140.dp)
     ) {
 
     }

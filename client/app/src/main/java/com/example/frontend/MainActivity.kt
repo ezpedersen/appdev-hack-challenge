@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -42,7 +43,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.frontend.ui.theme.FrontendTheme
 import kotlinx.serialization.Serializable
-
 
 
 sealed class Screen(val route: String, val icon: ImageVector, val label: String) {
@@ -67,19 +67,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         //Make something fancy here for the SYSTEM BARS
+        window.statusBarColor = Color(94,167,88).toArgb()
+        window.navigationBarColor = Color(94, 167, 88).toArgb()
         setContent {
             FrontendTheme {
                 val navController = rememberNavController()
                 val tabs= listOf(
                     Screen.ListingsScreen,
-                    Screen.ProfileScreen,
-                    Screen.MyListingsScreen
+                    Screen.MyListingsScreen,
+                    Screen.ProfileScreen
                 )
-
                 Scaffold(
                     modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
-                    topBar = {
-                        NavigationBar {
+                    bottomBar = {
+                        NavigationBar (
+                            containerColor = Color(94,167,88)
+                        ) {
                             val navBackStackEntry by navController.currentBackStackEntryAsState()
                             val currentDestination = navBackStackEntry?.destination
                             tabs.forEach { screen ->
@@ -96,12 +99,7 @@ class MainActivity : ComponentActivity() {
 
                                     },
                                     icon = { Icon(imageVector = screen.icon, contentDescription = null) },
-                                    label = { Text(text = screen.label) },
-                                    modifier = if (currentDestination?.hierarchy?.any { it.route == screen.route } == true){
-                                        Modifier.background(Color.LightGray)
-                                    } else {
-                                        Modifier.background(Color.White)
-                                    }
+                                    label = { Text(text = screen.label) }
                                 )
                             }
                         }
@@ -110,8 +108,8 @@ class MainActivity : ComponentActivity() {
                         NavHost(navController = navController,
                             startDestination = Screen.ListingsScreen.route) {
                             composable(Screen.ListingsScreen.route) { ListingsScreen() }
-                            composable(Screen.ProfileScreen.route) { ProfileScreen() }
                             composable(Screen.MyListingsScreen.route) { MyListingsScreen() }
+                            composable(Screen.ProfileScreen.route) { ProfileScreen() }
                         }
                     }
                 }

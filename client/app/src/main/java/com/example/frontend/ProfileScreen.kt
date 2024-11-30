@@ -25,7 +25,7 @@ fun ProfileScreen() {
             Column {
                 Text(text = "Username: ")
                 Spacer(modifier = Modifier.padding(16.dp))
-                Text(text = "netid: ")
+                Text(text = "NetId: ")
             }
         }
     }
