@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Add
@@ -25,12 +27,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavBackStackEntry
@@ -67,8 +72,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         //Make something fancy here for the SYSTEM BARS
-        window.statusBarColor = Color(94,167,88).toArgb()
-        window.navigationBarColor = Color(94, 167, 88).toArgb()
+        window.statusBarColor = Color(62,180,137).toArgb()
+        window.navigationBarColor = Color(62,180,137).toArgb()
         setContent {
             FrontendTheme {
                 val navController = rememberNavController()
@@ -81,7 +86,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
                     bottomBar = {
                         NavigationBar (
-                            containerColor = Color(94,167,88)
+                            containerColor = Color(62,180,137),
+                            modifier = Modifier.clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
                         ) {
                             val navBackStackEntry by navController.currentBackStackEntryAsState()
                             val currentDestination = navBackStackEntry?.destination
@@ -96,7 +102,6 @@ class MainActivity : ComponentActivity() {
                                             launchSingleTop = true
                                             restoreState = true
                                         }
-
                                     },
                                     icon = { Icon(imageVector = screen.icon, contentDescription = null) },
                                     label = { Text(text = screen.label) }
