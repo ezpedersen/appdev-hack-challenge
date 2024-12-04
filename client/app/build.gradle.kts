@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.5")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.appcompat:appcompat-resources:1.7.0")
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")

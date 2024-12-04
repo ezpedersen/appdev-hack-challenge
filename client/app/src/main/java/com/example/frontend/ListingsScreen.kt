@@ -1,12 +1,18 @@
 package com.example.frontend
 
+import android.view.Surface
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.SnackbarDefaults.backgroundColor
@@ -21,9 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
@@ -35,6 +43,7 @@ import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.RectangleShape
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,11 +67,17 @@ fun ListingsScreen() {
         )
     )
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-
+        modifier = Modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .background(Color(173, 247, 183))
+            .systemBarsPadding(),
         topBar = {
             MediumTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(62,180,137)),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(62,180,137),
+                    scrolledContainerColor = Color(62, 180, 137),
+                    titleContentColor = Color(62,180,137),
+                ),
                 title = {
                     Text(
                         text = "Listings",
@@ -80,12 +95,24 @@ fun ListingsScreen() {
                     )
                 },
                 scrollBehavior = scrollBehavior,
-                modifier = Modifier.clip(RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp))
+                modifier = Modifier
+                    .clip(RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp))
             )
         }
     ) { innerPadding ->
-        LazyColumn(modifier = Modifier.padding(innerPadding)) {
-            
+        LazyColumn(modifier = Modifier
+            .padding(
+                top = innerPadding.calculateTopPadding() - 15.dp,
+                bottom = innerPadding.calculateBottomPadding(),
+            )
+            .background(Color(173, 247, 183))
+
+
+        ) {
+            items(100) { listing ->
+                Listing(1)
+                Spacer(modifier = Modifier.size(10.dp))
+            }
         }
     }
 }

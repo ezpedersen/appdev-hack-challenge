@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
@@ -19,6 +20,11 @@ import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -53,16 +59,16 @@ import kotlinx.serialization.Serializable
 sealed class Screen(val route: String, val icon: ImageVector, val label: String) {
     data object ProfileScreen: Screen(
         route = "ProfileScreen",
-        icon = Icons.Filled.Person,
+        icon = Icons.Outlined.Person,
         label = "Profile")
     data object ListingsScreen: Screen(
         route = "ListingsScreen",
-        icon = Icons.AutoMirrored.Filled.FormatListBulleted,
+        icon = Icons.Outlined.Home,
         label = "Listings"
     )
     data object MyListingsScreen : Screen(
         route = "MyListingsScreen",
-        icon = Icons.Filled.Add,
+        icon = Icons.Outlined.AddCircleOutline,
         label = "My"
     )
 }
@@ -109,7 +115,11 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                 }) { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)) {
+                    Box(modifier = Modifier
+                        .padding(
+                            top = innerPadding.calculateTopPadding(),
+                            bottom = innerPadding.calculateBottomPadding() - 15.dp)
+                    ) {
                         NavHost(navController = navController,
                             startDestination = Screen.ListingsScreen.route) {
                             composable(Screen.ListingsScreen.route) { ListingsScreen() }
