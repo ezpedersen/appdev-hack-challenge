@@ -13,6 +13,7 @@ firebaseAnalytics = "22.1.2"
 firebaseAuth = "23.1.0"
 navigationCompose = "2.8.4"
 googleid = "1.1.1"
+googleGmsGoogleServices = "4.4.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,3 +42,4 @@ androidx-credentials-play-services-auth = { group = "androidx.credentials", name
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }

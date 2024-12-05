@@ -30,14 +30,33 @@ import com.example.frontend.ui.theme.FrontendTheme
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.Firebase
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import java.util.UUID
-
 class MainActivity : ComponentActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            reload()
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        FirebaseApp.initializeApp(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        auth = Firebase.auth
         setContent {
             FrontendTheme {
                 Surface(
@@ -48,17 +67,54 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        GoogleSignInButton()
-                        SignOutButton()
+                        if (auth.currentUser == null) {
+                            GoogleSignInButton { googleIdTokenCredential ->
+                                addToFirebaseAuth(
+                                    googleIdTokenCredential
+                                )
+                            }
+                        } else {
+                            SignOutButton {signOutFirebaseAuth()}
+                        }
                     }
                 }
             }
         }
     }
+
+    fun addToFirebaseAuth(googleIdTokenCredential: GoogleIdTokenCredential) {
+        val firebaseCredential =
+            GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
+        auth.signInWithCredential(firebaseCredential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    updateUI(null)
+                }
+            }
+    }
+    fun signOutFirebaseAuth(){
+        auth.signOut()
+        updateUI(auth.currentUser)
+    }
+
+    private fun updateUI(user: FirebaseUser?) {
+        this.recreate()
+    }
+
+    private fun reload() {
+
+    }
 }
 
 @Composable
-fun GoogleSignInButton() {
+fun GoogleSignInButton(onGoogleSignIn: (GoogleIdTokenCredential) -> Unit) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
@@ -76,11 +132,11 @@ fun GoogleSignInButton() {
                             .createFrom(credential.data)
                         Log.e(TAG, googleIdTokenCredential.idToken)
                         Toast.makeText(context, "Signed in", Toast.LENGTH_SHORT).show()
+                        onGoogleSignIn(googleIdTokenCredential)
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e(TAG, "Received an invalid google id token response", e)
                     }
-                }
-                else {
+                } else {
                     // Catch any unrecognized credential type here.
                     Log.e(TAG, "Unexpected type of credential")
                 }
@@ -92,6 +148,7 @@ fun GoogleSignInButton() {
             }
         }
     }
+
     val onClick: () -> Unit = {
 
 
@@ -100,9 +157,10 @@ fun GoogleSignInButton() {
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it) }
-        val googleIdOption: GetSignInWithGoogleOption = GetSignInWithGoogleOption.Builder("866736945253-dejlo9qadlpuintpirbcjbjld54e9u6b.apps.googleusercontent.com")
-            .setNonce(hashedNonce)
-            .build()
+        val googleIdOption: GetSignInWithGoogleOption =
+            GetSignInWithGoogleOption.Builder("866736945253-dejlo9qadlpuintpirbcjbjld54e9u6b.apps.googleusercontent.com")
+                .setNonce(hashedNonce)
+                .build()
         val request: GetCredentialRequest = GetCredentialRequest.Builder()
             .addCredentialOption(googleIdOption)
             .build()
@@ -128,7 +186,7 @@ fun GoogleSignInButton() {
 }
 
 @Composable
-fun SignOutButton(){
+fun SignOutButton(signOutFirebase: () -> Unit) {
     val context = LocalContext.current
     val credentialManager = CredentialManager.create(context)
     val coroutineScope = rememberCoroutineScope()
@@ -138,7 +196,8 @@ fun SignOutButton(){
             try {
                 credentialManager.clearCredentialState(request)
                 Toast.makeText(context, "Signed out", Toast.LENGTH_SHORT).show()
-            } catch (e: ClearCredentialException){
+                signOutFirebase()
+            } catch (e: ClearCredentialException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
