@@ -48,12 +48,10 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")
     implementation("com.google.accompanist:accompanist-permissions:0.36.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
+
     implementation(libs.androidx.compose.navigation)
     implementation(libs.kotlinx.serialization.json)
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
-    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -62,10 +60,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material:1.6.8")
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,4 +73,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
+    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    implementation(libs.retrofit)
+    implementation(libs.hilt.android)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi.kotlin)
 }
