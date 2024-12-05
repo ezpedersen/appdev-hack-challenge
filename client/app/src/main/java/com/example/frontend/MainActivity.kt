@@ -19,8 +19,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.ClearCredentialException
 import androidx.credentials.exceptions.GetCredentialException
 import com.example.frontend.ui.theme.FrontendTheme
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
@@ -45,6 +49,7 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         GoogleSignInButton()
+                        SignOutButton()
                     }
                 }
             }
@@ -56,8 +61,39 @@ class MainActivity : ComponentActivity() {
 fun GoogleSignInButton() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val credentialManager = CredentialManager.create(context)
+    fun handleSignIn(result: GetCredentialResponse) {
+        // Handle the successfully returned credential.
+        val credential = result.credential
+
+        when (credential) {
+            is CustomCredential -> {
+                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    try {
+                        // Use googleIdTokenCredential and extract id to validate and
+                        // authenticate on your server.
+                        val googleIdTokenCredential = GoogleIdTokenCredential
+                            .createFrom(credential.data)
+                        Log.e(TAG, googleIdTokenCredential.idToken)
+                        Toast.makeText(context, "Signed in", Toast.LENGTH_SHORT).show()
+                    } catch (e: GoogleIdTokenParsingException) {
+                        Log.e(TAG, "Received an invalid google id token response", e)
+                    }
+                }
+                else {
+                    // Catch any unrecognized credential type here.
+                    Log.e(TAG, "Unexpected type of credential")
+                }
+            }
+
+            else -> {
+                // Catch any unrecognized credential type here.
+                Log.e(TAG, "Unexpected type of credential")
+            }
+        }
+    }
     val onClick: () -> Unit = {
-        val credentialManager = CredentialManager.create(context)
+
 
         val rawNonce = UUID.randomUUID().toString()
         val bytes = rawNonce.toByteArray()
@@ -76,15 +112,7 @@ fun GoogleSignInButton() {
                     request = request,
                     context = context
                 )
-                val credential = result.credential
-
-                val googleIdTokenCredential = GoogleIdTokenCredential
-                    .createFrom(credential.data)
-                val googleIdToken = googleIdTokenCredential.idToken
-
-                Log.i(TAG, googleIdToken)
-
-                Toast.makeText(context, "Signed in", Toast.LENGTH_SHORT).show()
+                handleSignIn(result)
             } catch (e: GetCredentialException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             } catch (e: GoogleIdTokenParsingException) {
@@ -93,7 +121,29 @@ fun GoogleSignInButton() {
         }
     }
 
+
     Button(onClick = onClick) {
         Text("Sign in with Google")
+    }
+}
+
+@Composable
+fun SignOutButton(){
+    val context = LocalContext.current
+    val credentialManager = CredentialManager.create(context)
+    val coroutineScope = rememberCoroutineScope()
+    val onClick: () -> Unit = {
+        coroutineScope.launch {
+            val request = ClearCredentialStateRequest()
+            try {
+                credentialManager.clearCredentialState(request)
+                Toast.makeText(context, "Signed out", Toast.LENGTH_SHORT).show()
+            } catch (e: ClearCredentialException){
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    Button(onClick = onClick) {
+        Text("Sign out")
     }
 }
