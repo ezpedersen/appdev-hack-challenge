@@ -332,7 +332,7 @@ app.delete("/listing/:id/", async (req, res) => {
     }
 
     // Step 3: Delete the listing itself
-    await listing.remove();
+    await listing.deleteOne();
 
     // Step 4: Respond with success
     res.status(200).json({ message: "Listing deleted successfully!", deletedListing: listing });
