@@ -2,6 +2,33 @@
 import { Request, Response } from "npm:express";
 import User from "../models/User.ts";
 
+const createUser = async (req: Request, res: Response) => {
+  try {
+    const { uuid, name, netid, bio = ""} = req.body;
+
+    const newUser = new User({
+      uuid,
+      name,
+      netid,
+      bio,
+    });
+
+    const savedUser = await newUser.save();
+
+    res.status(201).json({
+      message: "New user created",
+      user: savedUser,
+    });
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === 11000) {
+      res.status(400).json({ error: "NetID already exists" });
+    } else if (error instanceof Error && error.name === "ValidationError") {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+};
 const getUser = async (req: Request, res: Response) => {
   const netid = req.params.netid;
   try {
@@ -131,32 +158,7 @@ const getAllUsers = async (_req: Request, res: Response) => {
     res.status(500).json({ error: "Something went wrong." });
   }
 };
-const createUser = async (req: Request, res: Response) => {
-  try {
-    const { name, netid, bio = "" } = req.body;
 
-    const newUser = new User({
-      name,
-      netid,
-      bio,
-    });
-
-    const savedUser = await newUser.save();
-
-    res.status(201).json({
-      message: "New user created",
-      user: savedUser,
-    });
-  } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === 11000) {
-      res.status(400).json({ error: "NetID already exists" });
-    } else if (error instanceof Error && error.name === "ValidationError") {
-      res.status(400).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  }
-};
 export {
   addFriend,
   createUser,

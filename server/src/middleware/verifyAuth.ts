@@ -2,7 +2,11 @@
 import { NextFunction, Response } from "npm:express";
 import { auth } from "../firebase.ts";
 import { AuthenticatedRequest } from "../types/AuthenticatedRequest.ts";
-const verifyAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+const verifyAuth = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401);
   const idToken = authHeader.split(" ")[1];
@@ -11,6 +15,7 @@ const verifyAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction
     req.uid = uid;
     next();
   }).catch((error) => {
+    console.log(idToken);
     console.log(error);
     res.sendStatus(403);
   });

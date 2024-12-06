@@ -8,7 +8,7 @@ import {
   getAllUsers,
   getUser,
   updateUser,
-} from "../controllers/usersController.ts";
+} from "../controllers/userController.ts";
 
 const router = express.Router();
 

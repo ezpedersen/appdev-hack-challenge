@@ -2,8 +2,8 @@
 import express from "npm:express";
 import "jsr:@std/dotenv/load";
 import mongoose from "npm:mongoose";
-import usersRouter from "./routes/users.ts";
-import listingsRouter from "./routes/listings.ts";
+import userRouter from "./routes/user.ts";
+import listingsRouter from "./routes/listing.ts";
 import { verifyAuth } from "./middleware/verifyAuth.ts";
 
 // MongoDB setup
@@ -24,8 +24,8 @@ app.get("/", (_req, res) => {
 
 // Protected routes
 app.use(verifyAuth);
-app.use("/users", usersRouter);
-app.use("/listings", listingsRouter);
+app.use("/user", userRouter);
+app.use("/listing", listingsRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
