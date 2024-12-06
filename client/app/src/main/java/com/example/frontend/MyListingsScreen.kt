@@ -1,5 +1,9 @@
 package com.example.frontend
 
+import android.app.AlertDialog
+import android.content.Context
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,7 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +36,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.BgWhite
-import com.example.frontend.ui.theme.Gray
 import com.example.frontend.ui.theme.MainBlue
 
 
@@ -47,11 +48,6 @@ import com.example.frontend.ui.theme.MainBlue
 fun MyListingsScreen() {
     var tempNum by remember { mutableIntStateOf(0) }
 
-    val shouldShowDialogBox = remember { mutableStateOf(false) }
-
-    if (shouldShowDialogBox.value) {
-//        AddDialogBox() { }
-    }
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -103,62 +99,54 @@ fun Listing() {
     }
 }
 
+
+
+
 //@Composable
-//fun AddDialogBox(shouldShowDialog: MutableState<Boolean>
-//): NewListing {
+//fun AddListingDialog(context: Context, shouldShow: MutableState<Boolean>, onResult: (NewListing) -> Unit) {
+//    val layout = LinearLayout(context).apply {
+//        orientation = LinearLayout.VERTICAL
+//        setPadding(50, 20, 50, 20) // Optional padding
+//    }
 //
-//    val itemName by remember { mutableStateOf(String)}
-//    val itemDesc by remember { mutableStateOf(String)}
 //
-//    if (shouldShowDialog.value) {
-//        Dialog(onDismissRequest = { shouldShowDialog.value = false }) {
-//            // Draw a rectangle shape with rounded corners inside the dialog
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(375.dp)
-//                    .padding(16.dp),
-//                shape = RoundedCornerShape(16.dp),
-//            ) {
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxSize().padding(10.dp),
-//                    verticalArrangement = Arrangement.Center,
-//                ) {
-//                    Text(
-//                        text = "Add image",
-//                        modifier = Modifier.padding(16.dp),
-//                    )
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.Center,
-//                    ) {
-//                        TextButton(
-//                            onClick = {shouldShowDialog.value = false},
-//                            modifier = Modifier.padding(8.dp),
-//                        ) {
-//                            Text("Dismiss")
-//                        }
-//                        TextButton(
-//                            onClick = {
-//                                shouldShowDialog.value = false
-//                                val listing: NewListing = NewListing(itemName.toString(), itemDesc.toString())
-//                                return listing
-//                                  },
-//                            modifier = Modifier.padding(8.dp),
-//                        ) {
-//                            Text("Confirm")
-//                        }
-//                    }
-//                }
-//            }
+//    val nameInputField = EditText(context).apply {
+//        hint = "Enter text"
+//    }
+//    layout.addView(nameInputField)
+//
+//    val descInputField = EditText(context).apply {
+//        hint = "Enter text"
+//    }
+//    layout.addView(descInputField)
+//
+//    val locationInputField = EditText(context).apply {
+//        hint = "Enter text"
+//    }
+//    layout.addView(locationInputField)
+//
+//    val dialog = AlertDialog.Builder(context)
+//        .setTitle("Add Listing")
+//        .setMessage("Enter details of the listing: ")
+//        .setView(layout)
+//        .setPositiveButton("OK") { _, _ ->
+//            val userInput = NewListing(nameInputField.text.toString(), descInputField.text.toString(), locationInputField.text.toString())
+//            onResult(userInput)
+//            shouldShow.value = false
 //        }
+//        .setNegativeButton("Cancel") { dialog, _ ->
+//            shouldShow.value = false
+//            dialog.dismiss() // Close the dialog
+//        }
+//        .create()
+//
+//    if (shouldShow.value) {// Show the dialog
+//        dialog.show()
 //    }
 //}
-//
-//data class NewListing(
-//    var name: String,
-//    val description: String
-//
-//)
+
+data class NewListing(
+    var name: String,
+    val description: String,
+    val location: String
+)
