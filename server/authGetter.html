@@ -1,0 +1,62 @@
+<html>
+
+<body>
+    <h1>Hello</h1>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js'
+
+        // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js'
+
+        // Add Firebase products that you want to use
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js'
+
+
+        const provider = new GoogleAuthProvider();
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBKUgrGg_DKhGO0wiAQM6ttRc37Hn0nMk",
+            authDomain: "appdev-hack-challenge-442718.firebaseapp.com",
+            projectId: "appdev-hack-challenge-442718",
+            storageBucket: "appdev-hack-challenge-442718.firebasestorage.app",
+            messagingSenderId: "866736945253",
+            appId: "1:866736945253:web:1f432c60c3f3ede2032e8c",
+            measurementId: "G-KN1LBL061Q",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        console.log(1);
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential?.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                // IdP data available using getAdditionalUserInfo(result)
+                // ...
+                console.log(token);
+                console.log(user)
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                console.log(errorMessage);
+                // ...
+            });
+    </script>
+</body>
+
+</html>
