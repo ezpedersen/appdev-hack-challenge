@@ -1,7 +1,8 @@
 {
   "tasks": {
-    "dev": "deno run --watch src/server.ts"
+    "dev": "deno run --watch --allow-all src/server.ts"
   },
   "imports": {
   }
 }
+

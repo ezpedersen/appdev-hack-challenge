@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,25 +36,6 @@ import kotlinx.coroutines.flow.onEach
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreen(viewModel: ProfileScreenViewModel = hiltViewModel()) {
-    //This was for a test
-    /*
-    var result by remember { mutableStateOf("Loading...") }
-    // Use LaunchedEffect to trigger the coroutine
-    LaunchedEffect(Unit) {
-        try {
-            val response = RetroFitUserHelper.api.getTest()
-            if (response.isSuccessful) {
-                val rawBody = response.body()
-                result = rawBody.toString()
-                println("Raw Body: $result")
-            } else {
-                println("Error: ${response.code()} - ${response.message()}")
-            }
-        } catch (e: Exception) {
-            println("Network Error: ${e.message}")
-        }
-    }
-    */
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -63,17 +45,24 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = hiltViewModel()) {
         }.launchIn(coroutineScope)
     }
 
-    val viewState by viewModel.
+    val viewState by viewModel.profileScreenViewState.collectAsState()
+
+    val user = viewState.name
+    val netId = viewState.netId
+    val bio = viewState.bio
+    val offered = viewState.offeredItems
+    val want = viewState.wantedItems
+    val friends = viewState.friendList
 
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(modifier = Modifier.weight(0.5f)) {
             Column {
-                Text(text = "Username: ")
+                Text(text = "Username: $user")
                 Spacer(modifier = Modifier.padding(16.dp))
-                Text(text = "NetId: ")
-                Text(text = "result")
+                Text(text = "NetId: $netId")
+                Text(text = "Bio: $bio")
             }
         }
     }
