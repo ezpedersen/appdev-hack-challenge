@@ -14,8 +14,7 @@ const router = express.Router();
 
 router.route("/:netid")
   .get(getUser)
-  .delete(deleteUser)
-  .put(updateUser);
+  
 
 router.route("/friend/:netid")
   .delete(deleteFriend)
@@ -23,6 +22,8 @@ router.route("/friend/:netid")
 
 router.route("/")
   .get(getAllUsers)
-  .post(createUser);
+  .post(createUser)
+  .delete(deleteUser)
+  .put(updateUser)
 
 export default router;
