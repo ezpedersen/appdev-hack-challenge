@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.SnackbarDefaults.backgroundColor
@@ -118,8 +119,13 @@ fun ListingsScreen() {
 }
 
 @Composable
-fun Listing(listingNum: Int) {
-    Row(modifier = Modifier.fillMaxWidth().height(40.dp)) {
-        Text(text = "Item no.: $listingNum")
+fun Listing(index : Int) {
+    Box(modifier = Modifier
+        .background(Color.Green)
+        .padding(vertical = 20.dp, horizontal = 10.dp)
+        .fillMaxWidth()
+        .height(200.dp)
+    ) {
+
     }
 }

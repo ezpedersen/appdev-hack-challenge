@@ -1,20 +1,35 @@
 package com.example.frontend.data
 
-import com.google.android.gms.common.api.Api
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
-object RetroFitWeatherHelper {
-    private const val BASE_URL = "localhost"
+@Module
+@InstallIn(SingletonComponent::class)
+object RetroFitUserHelper {
+    private const val BASE_URL = "http://10.0.2.2:3000/"
 
-    private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
-
-    val api: UserApi = retrofit.create(UserApi::class.java)
+    @Provides
+    @Singleton
+    fun provideMyApi(moshi : Moshi): UserApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+            .build()
+            .create(UserApi::class.java)
+    }
 }

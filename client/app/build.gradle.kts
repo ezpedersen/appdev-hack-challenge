@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
     id("com.google.devtools.ksp").version("2.0.21-1.0.28")
+    id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+
 }
 
 android {
@@ -49,7 +52,9 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.36.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
-    implementation(libs.androidx.compose.navigation)
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    kapt(libs.hilt.android.compiler)
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
@@ -83,4 +88,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.converter.moshi)
     implementation(libs.moshi.kotlin)
+}
+
+kapt {
+    correctErrorTypes = true
 }

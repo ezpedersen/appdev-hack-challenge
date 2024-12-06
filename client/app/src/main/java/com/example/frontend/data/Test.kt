@@ -1,4 +1,5 @@
 package com.example.frontend.data
 
-class Test {
-}
+class Test (
+    val result : String
+)
