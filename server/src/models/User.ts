@@ -1,9 +1,10 @@
 import { model, Schema } from "npm:mongoose";
 
 const userSchema = new Schema({
-  name: { type: String, required: true },
-  netid: { type: String, unique: true, required: true },
-  // profile picture
+  // google uuid
+  uuid: { type: String, required: true, unique: true},
+  name: { type: String },
+  netid: { type: String, unique: true},
   bio: { type: String, default: "" },
   wantedItems: [{ type: Schema.Types.ObjectId, ref: "Item" }],
   offeredItems: [{ type: Schema.Types.ObjectId, ref: "Item" }],
