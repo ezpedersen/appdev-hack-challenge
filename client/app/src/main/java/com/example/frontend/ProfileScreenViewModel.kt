@@ -78,6 +78,18 @@ class ProfileScreenViewModel @Inject constructor(
             val response = UserRepository.getUserById(netId)
             if (response.isSuccessful) {
                 val rawBody = response.body()
+                if (rawBody != null) {
+                    name = rawBody.name
+                    netId = rawBody.netId
+                    bio = rawBody.bio
+                    val wantedAdd = rawBody?.wantedItems ?: emptyList()
+                    val offeredAdd = rawBody?.offeredItems ?: emptyList()
+                    val friendsAdd = rawBody?.friendList ?: emptyList()
+                    wantedFlow.value = wantedFlow.value + wantedAdd
+                    offeredFlow.value = offeredFlow.value + offeredAdd
+                    friendFlow.value = friendFlow.value + friendsAdd
+                }
+
             } else {
                 println("Error: ${response.code()} - ${response.message()}")
             }

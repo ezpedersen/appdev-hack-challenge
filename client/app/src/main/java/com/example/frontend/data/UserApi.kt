@@ -11,5 +11,5 @@
     interface UserApi{
         @GET("/users/")
         @Headers("Accept: application/json")
-        suspend fun getUserById(@Query("netId") netId : String): Response<User>
+        suspend fun getUserById(@Query(":netId") netId : String): Response<User>
     }

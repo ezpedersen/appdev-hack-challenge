@@ -39,9 +39,7 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = hiltViewModel()) {
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        snapshotFlow { }.onEach {
-            viewModel.loadUser()
-        }.launchIn(coroutineScope)
+        viewModel.loadUser()
     }
 
     val viewState by viewModel.profileScreenViewState.collectAsState()
