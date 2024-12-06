@@ -45,6 +45,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.RectangleShape
+import com.example.frontend.ui.theme.AltBlue
+import com.example.frontend.ui.theme.BgWhite
+import com.example.frontend.ui.theme.Gray
+import com.example.frontend.ui.theme.MainBlue
+import com.example.frontend.ui.theme.TertiaryBlue
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,9 +80,8 @@ fun ListingsScreen() {
         topBar = {
             MediumTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(62,180,137),
-                    scrolledContainerColor = Color(62, 180, 137),
-                    titleContentColor = Color(62,180,137),
+                    containerColor = MainBlue,
+                    scrolledContainerColor = MainBlue
                 ),
                 title = {
                     Text(
@@ -106,12 +110,12 @@ fun ListingsScreen() {
                 top = innerPadding.calculateTopPadding() - 15.dp,
                 bottom = innerPadding.calculateBottomPadding(),
             )
-            .background(Color(173, 247, 183))
+            .background(BgWhite)
 
 
         ) {
             items(100) { listing ->
-                Listing(1)
+                Listing(listing)
                 Spacer(modifier = Modifier.size(10.dp))
             }
         }
@@ -121,9 +125,9 @@ fun ListingsScreen() {
 @Composable
 fun Listing(index : Int) {
     Box(modifier = Modifier
-        .background(Color.Green)
-        .padding(vertical = 20.dp, horizontal = 10.dp)
+        .background(AltBlue)
         .fillMaxWidth()
+        .padding(vertical = 50.dp, horizontal = 30.dp)
         .height(200.dp)
     ) {
 

@@ -53,6 +53,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.frontend.ui.theme.FrontendTheme
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.frontend.ui.theme.MainBlue
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -78,8 +79,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         //Make something fancy here for the SYSTEM BARS
-        window.statusBarColor = Color(62,180,137).toArgb()
-        window.navigationBarColor = Color(62,180,137).toArgb()
+        window.statusBarColor = MainBlue.toArgb()
+        window.navigationBarColor = MainBlue.toArgb()
         setContent {
             FrontendTheme {
                 val navController = rememberNavController()
@@ -92,7 +93,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
                     bottomBar = {
                         NavigationBar (
-                            containerColor = Color(62,180,137),
+                            containerColor = MainBlue,
                             modifier = Modifier.clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
                         ) {
                             val navBackStackEntry by navController.currentBackStackEntryAsState()
