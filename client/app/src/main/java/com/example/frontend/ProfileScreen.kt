@@ -56,7 +56,7 @@ fun ProfileScreen(
     val offered = viewState.offeredItems
     val want = viewState.wantedItems
     val friends = viewState.friendList
-
+    val token = logOutModel.token
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -66,11 +66,13 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.padding(16.dp))
                 Text(text = "NetId: $netId")
                 Text(text = "Bio: $bio")
+                Text(text = "Token: $token")
                 SignOutButton(
                     signOutFirebase = {
                         logOutModel.signOut()
                     }
                 )
+
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.frontend
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -31,6 +32,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.frontend.ui.LoginViewModel
+import com.example.frontend.ui.theme.AltBlue
+import com.example.frontend.ui.theme.MainBlue
 
 sealed class ScreenType(val route: String, val icon: ImageVector, val label: String) {
     data object ProfileScreen : ScreenType(
@@ -64,8 +67,10 @@ fun BaseScreen(loginViewModel : LoginViewModel) {
         modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
         bottomBar = {
             NavigationBar(
-                containerColor = Color(62, 180, 137),
-                modifier = Modifier.clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
+                containerColor = AltBlue,
+                modifier = Modifier
+                    .height(65.dp)
+                    .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination

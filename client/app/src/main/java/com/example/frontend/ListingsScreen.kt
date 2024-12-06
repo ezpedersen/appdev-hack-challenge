@@ -21,7 +21,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.googlefonts.GoogleFont
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.RectangleShape
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.BgWhite
 import com.example.frontend.ui.theme.MainBlue
@@ -64,28 +67,21 @@ fun ListingsScreen() {
         topBar = {
             MediumTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MainBlue,
-                    scrolledContainerColor = MainBlue
+                    containerColor = AltBlue,
+                    scrolledContainerColor = AltBlue
                 ),
                 title = {
                     Text(
                         text = "Listings",
                         fontFamily = fontFamily,
-                        fontSize = 35.sp,
+                        fontSize = 30.sp,
                         style = TextStyle(
                             fontSize = 24.sp,
-                            color = Color.White,
-                            shadow = Shadow(
-                                color = Color.Gray,
-                                offset = Offset(4f, 4f),
-                                blurRadius = 8f
-                            )
+                            color = Color.White
                         )
                     )
                 },
-                scrollBehavior = scrollBehavior,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp))
+                scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
@@ -94,13 +90,19 @@ fun ListingsScreen() {
                 top = innerPadding.calculateTopPadding() - 15.dp,
                 bottom = innerPadding.calculateBottomPadding(),
             )
+            .fillMaxWidth()
             .background(BgWhite)
-
-
+            .padding(10.dp)
         ) {
+            item {
+                Spacer(modifier = Modifier.size(20.dp))
+            }
             items(100) { listing ->
                 Listing(listing)
                 Spacer(modifier = Modifier.size(10.dp))
+            }
+            item {
+                Spacer(modifier = Modifier.size(20.dp))
             }
         }
     }
@@ -110,10 +112,17 @@ fun ListingsScreen() {
 fun Listing(index: Int) {
     Box(modifier = Modifier
         .height(200.dp)
+        .shadow(elevation = 4.dp, shape = RoundedCornerShape(10.dp), spotColor = Color.Gray)
+        .padding(5.dp)
         .clip(RoundedCornerShape(10.dp))
-        .background(AltBlue)
+        .background(BgWhite)
+        .padding(10.dp)
         .fillMaxWidth()
+
     ) {
-    Text(text = "Listing no: $index")
+        Text(
+            text = "Listing no: $index",
+            color = Color.DarkGray
+        )
     }
 }

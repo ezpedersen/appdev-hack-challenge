@@ -34,7 +34,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.frontend.ui.LoginViewModel
+import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.FrontendTheme
+import com.example.frontend.ui.theme.MainBlue
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,8 +45,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         //Make something fancy here for the SYSTEM BARS
-        window.statusBarColor = Color(62, 180, 137).toArgb()
-        window.navigationBarColor = Color(62, 180, 137).toArgb()
+        window.statusBarColor = AltBlue.toArgb()
+        window.navigationBarColor = AltBlue.toArgb()
         setContent {
             FrontendTheme {
                 val loginViewModel: LoginViewModel = hiltViewModel()

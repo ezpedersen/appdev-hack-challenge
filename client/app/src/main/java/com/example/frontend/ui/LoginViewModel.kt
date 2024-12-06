@@ -18,13 +18,17 @@ class LoginViewModel @Inject constructor(
 
     private val curScreen = mutableStateOf("LoginScreen")
     val currentScreen: State<String> = curScreen
+    var token : String = ""
 
     fun onSignIn(googleIdTokenCredential: GoogleIdTokenCredential) {
         googleAuthRepository.addToFirebaseAuth(googleIdTokenCredential) { success ->
             if (success) {
                 curScreen.value = "BaseScreen"
+                token = googleIdTokenCredential.idToken
             }
         }
+
+
     }
 
     fun signOut() {
