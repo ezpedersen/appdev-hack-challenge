@@ -4,7 +4,7 @@ import androidx.compose.ui.input.key.Key.Companion.I
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.frontend.data.Listing
-import com.example.frontend.data.RetroFitUserHelper
+import com.example.frontend.data.AppModule
 import com.example.frontend.data.User
 import com.example.frontend.data.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

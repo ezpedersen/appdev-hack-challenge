@@ -9,7 +9,7 @@
     import com.example.frontend.data.User
 
     interface UserApi{
-        @GET("/users/:netid")
+        @GET("/users/")
         @Headers("Accept: application/json")
         suspend fun getUserById(@Query("netId") netId : String): Response<User>
     }

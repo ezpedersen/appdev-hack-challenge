@@ -83,7 +83,6 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     implementation(libs.retrofit)
-    implementation(libs.hilt.android)
     implementation(libs.converter.moshi)
     implementation(libs.moshi.kotlin)
 }
