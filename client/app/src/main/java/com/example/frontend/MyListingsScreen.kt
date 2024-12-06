@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,11 +18,16 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -33,8 +39,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.frontend.data.Listing
 import com.example.frontend.data.User
@@ -44,9 +58,28 @@ import com.example.frontend.ui.theme.MainBlue
 import java.sql.Date
 import java.time.LocalDate
 
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
 fun MyListingsScreen() {
+
+    val provider = GoogleFont.Provider(
+        providerAuthority = "com.google.android.gms.fonts",
+        providerPackage = "com.google.android.gms",
+        certificates = R.array.com_google_android_gms_fonts_certs
+    )
+
+    val fontName = GoogleFont("Outfit")
+
+    val fontFamily = FontFamily(
+        Font(
+            googleFont = fontName,
+            fontProvider = provider,
+            weight = FontWeight.Medium,
+            style = FontStyle.Normal
+        )
+    )
+
     var tempNum by remember { mutableIntStateOf(0) }
 
     val proxyUser = User("John", "j001", "Person", listOf(), listOf(), listOf())
@@ -63,72 +96,86 @@ fun MyListingsScreen() {
                 tempNum++
             }
     ) }
-    /*
+
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
-            CenterAlignedTopAppBar()
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = AltBlue,
+                    scrolledContainerColor = AltBlue
+                ),
+                title = {
+                    Text(
+                        text = "My Listings",
+                        fontFamily = fontFamily,
+                        fontSize = 30.sp,
+                        style = TextStyle(
+                            fontSize = 24.sp,
+                            color = Color.White
+                        )
+                    )
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton( onClick = {
+                shouldShowDialog.value = true
+            },
+                modifier = Modifier
+                    .size(40.dp)
+
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null,
+                    tint = BgWhite
+                )
+            }
         }
     ) { innerPadding ->
-
-    }
-    */
-
-    Row (
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MainBlue)
-            .padding(horizontal = 10.dp)
-    ) {
-        Text(
-            text = "My Listings",
-            fontSize = 30.sp,
+        LazyColumn (
             modifier = Modifier
-                .align(alignment = Alignment.CenterVertically)
-                .weight(2f)
-        )
-        IconButton(
-            onClick = {
-                shouldShowDialog.value = true
-              },
-            modifier = Modifier
-                .size(40.dp)
-                .weight(1f)
-
+                .padding(
+                    top = innerPadding.calculateTopPadding() - 15.dp,
+                    bottom = innerPadding.calculateBottomPadding(),
+                )
+                .fillMaxSize()
+                .background(BgWhite)
+                .padding(10.dp)
         ) {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = null,
-                tint = BgWhite
-            )
-        }
-    }
-    LazyColumn (modifier = Modifier.padding(horizontal = 10.dp, vertical = 60.dp)
-    ) {
-        items(tempNum) { list ->
-            ListingTab(listing)
-            Spacer(modifier = Modifier.size(10.dp))
-        }
-    }
+            item {
+                Spacer(modifier = Modifier.size(20.dp))
+            }
+            items(tempNum) { list ->
 
+                ListingTab(listing)
+                Spacer(modifier = Modifier.size(10.dp))
+            }
+
+        }
+    }
 }
 
 @Composable
 fun ListingTab(listing: Listing) {
     Box(modifier = Modifier
         .height(200.dp)
+        .shadow(elevation = 4.dp, shape = RoundedCornerShape(10.dp), spotColor = Color.Gray)
+        .padding(5.dp)
         .clip(RoundedCornerShape(10.dp))
-        .background(AltBlue)
+        .background(BgWhite)
+        .padding(10.dp)
         .fillMaxWidth()
     ) {
         Column{
-        Text(text = listing.name)
-        Text(text = listing.date.toString())
-        Text(text = listing.description)
-        Text(text = listing.type)
-        Text(text = listing.owner.name)
-        Text(text = listing.acceptedBy.name)
-            }
+            Text(text = listing.name, color = Color.DarkGray)
+            Text(text = listing.date.toString(), color = Color.DarkGray)
+            Text(text = listing.description, color = Color.DarkGray)
+            Text(text = listing.type, color = Color.DarkGray)
+            Text(text = listing.owner.name, color = Color.DarkGray)
+            Text(text = listing.acceptedBy.name, color = Color.DarkGray)
+        }
     }
 }
 
