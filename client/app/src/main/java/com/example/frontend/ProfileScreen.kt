@@ -28,13 +28,19 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.frontend.ui.components.GoogleSignInButton
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import com.example.frontend.ui.LoginViewModel
+import com.example.frontend.ui.components.SignOutButton
 
 
 @Preview(showBackground = true)
 @Composable
-fun ProfileScreen(viewModel: ProfileScreenViewModel = hiltViewModel()) {
+fun ProfileScreen(
+    viewModel: ProfileScreenViewModel = hiltViewModel(),
+    logOutModel: LoginViewModel = hiltViewModel()
+) {
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -60,6 +66,11 @@ fun ProfileScreen(viewModel: ProfileScreenViewModel = hiltViewModel()) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 Text(text = "NetId: $netId")
                 Text(text = "Bio: $bio")
+                SignOutButton(
+                    signOutFirebase = {
+                        logOutModel.signOut()
+                    }
+                )
             }
         }
     }

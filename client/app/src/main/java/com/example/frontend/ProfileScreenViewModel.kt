@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.frontend.data.Listing
 import com.example.frontend.data.AppModule
+import com.example.frontend.data.GoogleAuthRepository
 import com.example.frontend.data.User
 import com.example.frontend.data.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,8 @@ data class ProfileScreenViewState(
 
 @HiltViewModel
 class ProfileScreenViewModel @Inject constructor(
-    private val UserRepository : UserRepository,
+    private val googleAuthRepository: GoogleAuthRepository,
+    private val UserRepository : UserRepository
 ) : ViewModel() {
     private var name= ""
     private var netId = ""
