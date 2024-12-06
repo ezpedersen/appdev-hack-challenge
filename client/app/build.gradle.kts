@@ -6,7 +6,7 @@ plugins {
     id("com.google.devtools.ksp").version("2.0.21-1.0.28")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
-
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -45,6 +45,7 @@ android {
 }
 
 dependencies {
+<<<<<<< HEAD
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.5")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.appcompat:appcompat-resources:1.7.0")
@@ -55,6 +56,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
+=======
+>>>>>>> origin/main
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -64,10 +67,22 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+<<<<<<< HEAD
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material:1.6.8")
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
+=======
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.androidx.credentials)
+    implementation(libs.googleid)
+    implementation(libs.androidx.credentials.play.services.auth)
+
+>>>>>>> origin/main
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
