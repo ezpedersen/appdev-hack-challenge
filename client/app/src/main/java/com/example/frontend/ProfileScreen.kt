@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,10 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,6 +44,7 @@ import com.example.frontend.ui.LoginViewModel
 import com.example.frontend.ui.components.SignOutButton
 import coil.compose.AsyncImage
 import com.example.frontend.ui.theme.AltBlue
+import com.example.frontend.ui.theme.BgWhite
 
 
 @Preview(showBackground = true)
@@ -68,8 +72,9 @@ fun ProfileScreen(
     val friends = viewState.friendList
     val profilePic = logOutModel.getProfileIconUrl()
 
-    Column(modifier = Modifier.fillMaxSize(),
+    Column(modifier = Modifier.fillMaxSize().background(BgWhite),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Box(modifier = Modifier.weight(0.5f)) {
             Column {
@@ -80,14 +85,25 @@ fun ProfileScreen(
                         modifier = Modifier
                             .size(100.dp)
                             .background(AltBlue)
+                            .clip(CircleShape)
                             .padding(8.dp),
                         contentScale = ContentScale.Crop
                     )
                 }
-                Text(text = "Username: $user")
+                Spacer(modifier = Modifier.padding(36.dp))
+
+                Text(text = "Username: $user", fontSize = 24.sp)
+
                 Spacer(modifier = Modifier.padding(16.dp))
-                Text(text = "NetId: $netId")
-                Text(text = "Bio: $bio")
+
+                Text(text = "NetId: $netId", fontSize = 20.sp)
+
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                Text(text = "Bio: $bio", fontSize = 20.sp)
+
+                Spacer(modifier = Modifier.padding(36.dp))
+                
                 SignOutButton(
                     signOutFirebase = {
                         logOutModel.signOut()
