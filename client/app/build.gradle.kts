@@ -100,7 +100,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.14.2")
     kapt("com.github.bumptech.glide:compiler:4.12.0")
 
-    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 }
 kapt {
     correctErrorTypes = true

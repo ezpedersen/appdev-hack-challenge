@@ -68,8 +68,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel(),
-                     UserRepository : UserRepository
+fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel()
                     ) {
 
     val provider = GoogleFont.Provider(
