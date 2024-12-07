@@ -77,7 +77,7 @@ class ProfileScreenViewModel @Inject constructor(
 
     fun loadUser() = viewModelScope.launch {
         try {
-            val response = UserRepository.getUserById(netId)
+            val response = UserRepository.getUserByNetId(netId)
             if (response.isSuccessful) {
                 val rawBody = response.body()
                 if (rawBody != null) {
