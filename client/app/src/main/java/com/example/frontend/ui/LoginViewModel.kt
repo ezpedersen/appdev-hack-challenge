@@ -59,7 +59,7 @@ class LoginViewModel @Inject constructor(
     }
 
     init {
-        curScreen.value = if (googleAuthRepository.auth.currentUser != null && infoEntered.value == true) {
+        curScreen.value = if (googleAuthRepository.auth.currentUser != null && infoEntered.value) {
             "BaseScreen"
         } else if (!infoEntered.value) {
             "OnboardingScreen"

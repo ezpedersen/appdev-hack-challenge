@@ -30,6 +30,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,16 +52,19 @@ import androidx.navigation.NavController
 import com.example.frontend.data.FriendRequest
 import com.example.frontend.data.Listing
 import com.example.frontend.data.User
+import com.example.frontend.data.UserRepository
 import com.example.frontend.ui.LoginViewModel
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.BgWhite
 import com.example.frontend.ui.theme.MainBlue
+import kotlinx.coroutines.launch
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
     loginViewModel: LoginViewModel = hiltViewModel(),
-    navController: NavController
+    userRepository: UserRepository
 ) {
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
@@ -85,11 +89,10 @@ fun OnboardingScreen(
         )
     )
 
-    val uuid : String = loginViewModel.getUId()
-    val name : String = loginViewModel.getDisplayName()
-    val imageUrl : String = loginViewModel.getProfileIconUrl()
     var netId by remember { mutableStateOf("") }
     var bio by remember { mutableStateOf("") }
+
+    val scope = rememberCoroutineScope()
 
 
     Column(
@@ -151,7 +154,25 @@ fun OnboardingScreen(
         Spacer(modifier = Modifier.size(50.dp))
         Button(
             colors = ButtonDefaults.buttonColors(MainBlue),
-            onClick =  { loginViewModel.onComplete()},
+            onClick =  {
+                scope.launch {
+                    loginViewModel.onComplete()
+                    userRepository.createUser(
+                        User(
+                            loginViewModel.getUId(),
+                            loginViewModel.getDisplayName(),
+                            loginViewModel.getProfileIconUrl(),
+                            netId,
+                            bio,
+                            listOf(),
+                            listOf(),
+                            listOf(),
+                            listOf()
+                        )
+                    )
+                }
+
+           },
         ) {
             Text("Finish", color = BgWhite)
         }

@@ -34,6 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.frontend.data.UserRepository
 import com.example.frontend.ui.LoginViewModel
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.MainBlue
@@ -62,7 +63,10 @@ sealed class ScreenType(val route: String, val iconIs: ImageVector, val iconNot:
 }
 
 @Composable
-fun BaseScreen(loginViewModel : LoginViewModel) {
+fun BaseScreen(
+    loginViewModel : LoginViewModel,
+    userRepository : UserRepository
+) {
     val navController = rememberNavController()
     val tabs = listOf(
         ScreenType.ListingsScreen,
@@ -122,7 +126,7 @@ fun BaseScreen(loginViewModel : LoginViewModel) {
                 startDestination = ScreenType.ListingsScreen.route
             ) {
                 composable(ScreenType.ListingsScreen.route) { ListingsScreen() }
-                composable(ScreenType.MyListingsScreen.route) { MyListingsScreen() }
+                composable(ScreenType.MyListingsScreen.route) { MyListingsScreen(loginViewModel, userRepository) }
                 composable(ScreenType.ProfileScreen.route) { ProfileScreen(logOutModel = loginViewModel) }
             }
         }

@@ -33,6 +33,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.frontend.data.AppModule
+import com.example.frontend.data.UserRepository
 import com.example.frontend.ui.LoginViewModel
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.FrontendTheme
@@ -51,6 +53,7 @@ class MainActivity : ComponentActivity() {
             FrontendTheme {
                 val loginViewModel: LoginViewModel = hiltViewModel()
                 val currentScreen by loginViewModel.currentScreen
+                val userRepository: UserRepository = UserRepository(AppModule.provideMyApi(AppModule.provideMoshi()))
 
                 when (currentScreen) {
                     "LoginScreen" -> {
@@ -59,9 +62,9 @@ class MainActivity : ComponentActivity() {
                     }
                     "OnboardingScreen" -> {
                         val navController = rememberNavController()
-                        OnboardingScreen(loginViewModel = loginViewModel, navController = navController)
+                        OnboardingScreen(loginViewModel = loginViewModel, userRepository)
                     }
-                    "BaseScreen" -> BaseScreen(loginViewModel = loginViewModel)
+                    "BaseScreen" -> BaseScreen(userRepository = userRepository, loginViewModel = loginViewModel)
                 }
 
             }
