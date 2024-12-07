@@ -37,6 +37,11 @@ class LoginViewModel @Inject constructor(
         return user?.photoUrl.toString()
     }
 
+    fun getDisplayName(): String{
+        val user = FirebaseAuth.getInstance().currentUser
+        return user?.displayName.toString()
+    }
+
     fun signOut() {
         googleAuthRepository.signOutFirebaseAuth()
         curScreen.value = "LoginScreen"
