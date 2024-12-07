@@ -84,9 +84,9 @@ class ProfileScreenViewModel @Inject constructor(
                     name = rawBody.name
                     netId = rawBody.netId
                     bio = rawBody.bio
-                    val wantedAdd = rawBody?.wantedItems ?: emptyList()
-                    val offeredAdd = rawBody?.offeredItems ?: emptyList()
-                    val friendsAdd = rawBody?.friendList ?: emptyList()
+                    val wantedAdd = rawBody?.asks ?: emptyList()
+                    val offeredAdd = rawBody?.gives ?: emptyList()
+                    val friendsAdd = rawBody?.friends ?: emptyList()
                     wantedFlow.value = wantedFlow.value + wantedAdd
                     offeredFlow.value = offeredFlow.value + offeredAdd
                     friendFlow.value = friendFlow.value + friendsAdd

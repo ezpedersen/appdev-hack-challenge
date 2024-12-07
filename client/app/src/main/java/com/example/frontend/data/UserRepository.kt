@@ -9,6 +9,6 @@ class UserRepository @Inject constructor(
     private val userApi : ApiService,
 )  {
     suspend fun getUserById(netId : String): Response<User> {
-        return userApi.getUserById(netId)
+        return userApi.getUserByNetid(netId)
     }
 }

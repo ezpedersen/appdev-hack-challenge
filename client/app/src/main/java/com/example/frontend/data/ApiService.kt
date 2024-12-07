@@ -15,64 +15,63 @@
     interface ApiService {
         @Headers("Accept: application/json")
         @GET("/user/{netid}")
-        fun getUserByNetid(@Path("netid") netid: String): Response<User>
+        suspend fun getUserByNetid(@Path("netid") netid: String): Response<User>
 
         @Headers("Accept: application/json")
         @GET("/user/uuid/{uuid}")
-        fun getUserByUuid(@Path("uuid") uuid: String): Response<User>
+        suspend fun getUserByUuid(@Path("uuid") uuid: String): Response<User>
 
         @Headers("Accept: application/json")
         @POST("/user")
-        fun createUser(@Body user: User): Call<User>
+        suspend fun createUser(@Body user: User): Call<User>
 
         @Headers("Accept: application/json")
         @DELETE("/user")
-        fun deleteUser(): Call<Void>
+        suspend fun deleteUser(): Call<Void>
 
         @Headers("Accept: application/json")
         @PUT("/user")
-        fun updateUserBio(@Body userBio: String): Call<String>
+        suspend fun updateUserBio(@Body userBio: String): Call<String>
 
         // Friend Routes
         @Headers("Accept: application/json")
         @GET("/friend")
-        fun getFriendRequests(): Call<List<FriendRequest>>
+        suspend fun getFriendRequests(): Call<List<FriendRequest>>
 
         @Headers("Accept: application/json")
         @POST("/friend")
-        fun sendFriendRequest(@Body friendRequest: FriendRequest): Call<Void>
+        suspend fun sendFriendRequest(@Body netId : String): Call<Void>
 
         @Headers("Accept: application/json")
         @PUT("/friend/{id}")
-        fun respondToFriendRequest(@Path("id") id: String, @Body response: FriendResponse): Call<Void>
+        suspend fun respondToFriendRequest(@Path("id") id: String, @Body accept : String): Call<Void>
 
         @Headers("Accept: application/json")
         @DELETE("/friend")
-        fun deleteFriend(@Body netid: String): Call<Void>
+        suspend fun deleteFriend(@Body netid: String): Call<Void>
 
         // Listing Routes
         @Headers("Accept: application/json")
         @GET("/listing/asks")
-        fun getAskListings(): Call<List<Listing>>
+        suspend fun getAskListings(): Response<List<Listing>>
 
         @Headers("Accept: application/json")
         @GET("/listing/gives")
-        fun getGiveListings(): Call<List<Listing>>
+        suspend fun getGiveListings(): Response<List<Listing>>
 
         @Headers("Accept: application/json")
         @GET("/listing/{id}")
-        fun getListingById(@Path("id") id: String): Call<Listing>
+        suspend fun getListingById(@Path("id") id: String): Response<Listing>
 
         @Headers("Accept: application/json")
         @POST("/listing")
-        fun createListing(@Body listing: ListingRequest): Call<ListingResponse>
+        suspend fun createListing(@Body listing: Listing): Call<Listing>
 
         @Headers("Accept: application/json")
         @PUT("/listing/{id}")
-        fun updateListing(@Path("id") id: String, @Body listing: ListingUpdateRequest): Call<ListingResponse>
+        suspend fun updateListing(@Path("id") id: String, @Body listing: Listing): Call<Listing>
 
         @Headers("Accept: application/json")
         @DELETE("/listing/{id}")
-        fun deleteListing(@Path("id") id: String): Call<Void>
-        suspend fun getUserById(@Query("netId") netId : String): Response<User>
+        suspend fun deleteListing(@Path("id") id: String): Call<Void>
     }

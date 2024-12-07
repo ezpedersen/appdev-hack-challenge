@@ -89,19 +89,19 @@ fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel()) {
 
     var tempNum by remember { mutableIntStateOf(0) }
 
-    val proxyUser = User("John", "j001", "---", listOf(), listOf(), listOf())
+    val proxyUser = User("John", "j001", "---", "","", listOf(), listOf(), listOf(), listOf())
 
     val shouldShowDialog = remember { mutableStateOf(false) }
 
-    var listing: Listing=  Listing("empty", Date.valueOf(LocalDate.now().toString()), "empty", "empty", proxyUser, proxyUser)
+    var listing: Listing=  Listing("empty", Date.valueOf(LocalDate.now().toString()), "empty", "empty", "", proxyUser, proxyUser)
 
     if (shouldShowDialog.value) {
         AddListingDialog(
             shouldShowDialog,
             onSubmit = { name, desc, type ->
                 val userName = logOutModel.getDisplayName()
-                val user = User(userName, "j001", "---", listOf(), listOf(), listOf())
-                listing = Listing(name, Date.valueOf(LocalDate.now().toString()), desc, type, user, proxyUser)
+                val user = User(userName, "j001", "---", "", "", listOf(), listOf(), listOf(), listOf())
+                listing = Listing(name, Date.valueOf(LocalDate.now().toString()), desc, type, "", user, proxyUser)
                 tempNum++
             }
     ) }
@@ -179,7 +179,7 @@ fun ListingTab(listing: Listing) {
     ) {
         Column{
             Text(text = listing.name, color = Color.DarkGray)
-            Text(text = listing.date.toString(), color = Color.DarkGray)
+            Text(text = listing.createdAt.toString(), color = Color.DarkGray)
             Text(text = listing.description, color = Color.DarkGray)
             Text(text = listing.type, color = Color.DarkGray)
             Text(text = listing.owner.name, color = Color.DarkGray)
