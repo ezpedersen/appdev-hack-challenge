@@ -1,6 +1,7 @@
 package com.example.frontend.data
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.util.Log
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.Firebase
@@ -25,6 +26,11 @@ class GoogleAuthRepository @Inject constructor() {
             .addOnCompleteListener { task ->
                 onComplete(task.isSuccessful)
             }
+    }
+
+    fun getUserProfilePicUrl(): String? {
+        val user = auth.currentUser
+        return user?.photoUrl?.toString()
     }
 
     fun signOutFirebaseAuth() {

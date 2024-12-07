@@ -19,6 +19,8 @@ firebaseAuth = "23.1.0"
 navigationCompose = "2.8.4"
 googleid = "1.1.1"
 googleGmsGoogleServices = "4.4.2"
+coilCompose="2.7.0"
+coilTransformations="2.2.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +50,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version = "1.3.0" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version = "1.3.0" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+coil-transformations = { group = "io.coil-kt", name = "coil-transformations", version.ref = "coilTransformations" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

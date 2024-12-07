@@ -10,6 +10,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import androidx.compose.runtime.State
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
+import android.widget.ImageView
+import com.google.firebase.auth.FirebaseAuth
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -18,17 +23,18 @@ class LoginViewModel @Inject constructor(
 
     private val curScreen = mutableStateOf("LoginScreen")
     val currentScreen: State<String> = curScreen
-    var token : String = ""
 
     fun onSignIn(googleIdTokenCredential: GoogleIdTokenCredential) {
         googleAuthRepository.addToFirebaseAuth(googleIdTokenCredential) { success ->
             if (success) {
                 curScreen.value = "BaseScreen"
-                token = googleIdTokenCredential.idToken
             }
         }
+    }
 
-
+    fun getProfileIconUrl() : String{
+        val user = FirebaseAuth.getInstance().currentUser
+        return user?.photoUrl.toString()
     }
 
     fun signOut() {
