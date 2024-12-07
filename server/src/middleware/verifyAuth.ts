@@ -12,7 +12,7 @@ const verifyAuth = (
   const idToken = authHeader.split(" ")[1];
   auth.verifyIdToken(idToken).then((decodedToken) => {
     const uid = decodedToken.uid;
-    req.uid = uid;
+    req.uuid = uid;
     next();
   }).catch((error) => {
     console.log(idToken);

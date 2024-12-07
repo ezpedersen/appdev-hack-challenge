@@ -1,0 +1,19 @@
+/user
+	GET (/:netid) -> name, imageURL, netid, bio, asks, gives, friends
+	GET (/uuid/:uuid) -> return same as above
+	POST (/) [name, netid, bio, imageURL] -> get new user
+	DELETE (/) -> user before deletion
+	PUT (/) -> [bio] -> updated user 
+/friend
+	GET (/) -> get all friend requests
+	POST (/) [netid] -> new friend request
+	PUT (/:id) [accept: true/false] -> accept or decline friend request
+	DELETE (/) [netid] -> deleted friend user
+/listing
+	GET (/asks) -> Get all "ask" listings from others
+	GET (/gives) -> Get all "give" listings from others
+	GET (/:id) -> Get listing by id 
+	POST (/) -> [name, description, owner, type: "give"/"ask", imageURL] Create new listing
+	PUT (/:id) -> [name, description, type: "give"/"ask", imageURL ONLY IF IS OWNER AND NOT ACCEPTED ALREADY]
+			   -> [acceptedBy] IF YOU ARE THE ACCEPTOR AND NOT ALREADY ACCEPTED
+	DELETE (/:id) -> DELETE ONLY IF YOU ARE THE OWNER AND NOT ALREADY ACCEPTED

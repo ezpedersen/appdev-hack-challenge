@@ -1,23 +1,24 @@
 // @deno-types="npm:@types/express"
-import { Request, Response } from "npm:express";
+import { Response } from "npm:express";
 import User from "../models/User.ts";
+import { AuthenticatedRequest } from "../types/AuthenticatedRequest.ts";
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: AuthenticatedRequest, res: Response) => {
+  const uuid = req!.uuid;
   try {
-    const { uuid, name, netid, bio = ""} = req.body;
-
+    const { name, netid, bio = "", imageUrl } = req.body;
     const newUser = new User({
       uuid,
       name,
+      imageUrl,
       netid,
       bio,
     });
 
-    const savedUser = await newUser.save();
+    const _savedUser = await newUser.save();
 
     res.status(201).json({
       message: "New user created",
-      user: savedUser,
     });
   } catch (error) {
     if (error instanceof Error && "code" in error && error.code === 11000) {
@@ -29,10 +30,14 @@ const createUser = async (req: Request, res: Response) => {
     }
   }
 };
-const getUser = async (req: Request, res: Response) => {
+
+const getUser = async (req: AuthenticatedRequest, res: Response) => {
   const netid = req.params.netid;
+
   try {
-    const user = await User.findOne({ netid });
+    const user = await User.findOne({ netid })
+      .select("name imageURL netid bio asks gives friends")
+      .populate("asks gives friends");
 
     if (!user) return res.status(404).json({ error: "user not found" });
 
@@ -42,11 +47,28 @@ const getUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: "internal Server Error" });
   }
 };
-const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const netid = req.params.netid;
 
-    const deletedUser = await User.findOneAndDelete({ netid: netid });
+const getUUIDUser = async (req: AuthenticatedRequest, res: Response) => {
+  const uuid = req.params.uuid;
+
+  try {
+    const user = await User.findOne({ uuid })
+      .select("name imageURL netid bio asks gives friends")
+      .populate("asks gives friends");
+
+    if (!user) return res.status(404).json({ error: "user not found" });
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal Server Error" });
+  }
+};
+
+const deleteUser = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const uuid = req?.uuid;
+
+    const deletedUser = await User.findOneAndDelete({ uuid: uuid });
 
     if (!deletedUser) {
       return res.status(404).json({ error: "User not found" });
@@ -61,26 +83,23 @@ const deleteUser = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const updateUser = async (req: Request, res: Response) => {
-  const netid = req.params.netid;
-  const { name, bio } = req.body;
 
-  if (!name && !bio) {
-    return res.status(400).json({ error: "Please provide name or bio" });
+const updateUser = async (req: AuthenticatedRequest, res: Response) => {
+  const uuid = req?.uuid;
+  const { bio } = req.body;
+
+  if (!bio) {
+    return res.status(400).json({ error: "Please provide bio" });
   }
 
   try {
-    const user = await User.findOne({ netid });
+    const user = await User.findOne({ uuid });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (name) {
-      user.name = name;
-    }
-    if (bio) {
-      user.bio = bio;
-    }
+    user.bio = bio;
+
     await user.save();
 
     res.status(200).json({ user });
@@ -90,7 +109,7 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-const deleteFriend = async (req: Request, res: Response) => {
+/*const deleteFriend = async (req: AuthenticatedRequest, res: Response) => {
   const netid = req.params.netid;
   const { idToRemove } = req.body;
 
@@ -104,13 +123,13 @@ const deleteFriend = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const friendIndex = user.friendList.findIndex(idToRemove);
+    const friendIndex = user.friends.findIndex(idToRemove);
 
     if (friendIndex === -1) {
       return res.status(404).json({ error: "Friend not found" });
     }
 
-    user.friendList.splice(friendIndex, 1);
+    user.friends.splice(friendIndex, 1);
     await user.save();
 
     res.status(200).json(user);
@@ -119,7 +138,7 @@ const deleteFriend = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-const addFriend = async (req: Request, res: Response) => {
+const addFriend = async (req: AuthenticatedRequest, res: Response) => {
   const netid = req.params.netid;
   const { idToAdd } = req.body;
 
@@ -133,11 +152,11 @@ const addFriend = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (user.friendList.includes(idToAdd.toString())) {
+    if (user.friends.includes(idToAdd.toString())) {
       return res.status(404).json({ error: "Friend already added!" });
     }
 
-    user.friendList.push(idToAdd);
+    user.friends.push(idToAdd);
     await user.save();
     res.status(200).json(user);
   } catch (error) {
@@ -146,7 +165,7 @@ const addFriend = async (req: Request, res: Response) => {
   }
 };
 
-const getAllUsers = async (_req: Request, res: Response) => {
+const getAllUsers = async (_req: AuthenticatedRequest, res: Response) => {
   try {
     const users = await User.find();
 
@@ -161,10 +180,13 @@ const getAllUsers = async (_req: Request, res: Response) => {
 
 export {
   addFriend,
+  getUUIDUser,
   createUser,
   deleteFriend,
   deleteUser,
   getAllUsers,
   getUser,
   updateUser,
-};
+};*/
+
+export { createUser, deleteUser, getUser, getUUIDUser, updateUser };
