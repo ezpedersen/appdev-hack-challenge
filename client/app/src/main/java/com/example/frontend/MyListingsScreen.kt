@@ -1,5 +1,10 @@
 package com.example.frontend
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,8 +55,10 @@ import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.frontend.data.Listing
 import com.example.frontend.data.User
+import com.example.frontend.ui.LoginViewModel
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.BgWhite
 import com.example.frontend.ui.theme.MainBlue
@@ -61,7 +68,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun MyListingsScreen() {
+fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel()) {
 
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
@@ -82,7 +89,7 @@ fun MyListingsScreen() {
 
     var tempNum by remember { mutableIntStateOf(0) }
 
-    val proxyUser = User("John", "j001", "Person", listOf(), listOf(), listOf())
+    val proxyUser = User("John", "j001", "---", listOf(), listOf(), listOf())
 
     val shouldShowDialog = remember { mutableStateOf(false) }
 
@@ -92,7 +99,9 @@ fun MyListingsScreen() {
         AddListingDialog(
             shouldShowDialog,
             onSubmit = { name, desc, type ->
-                listing = Listing(name, Date.valueOf(LocalDate.now().toString()), desc, type, proxyUser, proxyUser)
+                val userName = logOutModel.getDisplayName()
+                val user = User(userName, "j001", "---", listOf(), listOf(), listOf())
+                listing = Listing(name, Date.valueOf(LocalDate.now().toString()), desc, type, user, proxyUser)
                 tempNum++
             }
     ) }
@@ -185,6 +194,13 @@ fun AddListingDialog(shouldShowDialog: MutableState<Boolean>, onSubmit: (String,
     val desc = remember { mutableStateOf("") }
     val type = remember { mutableStateOf("") }
 
+    var imageUri by remember { mutableStateOf<Uri?>(null)}
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {uri -> imageUri = uri}
+    )
+
 
 
     if (shouldShowDialog.value) {
@@ -227,6 +243,15 @@ fun AddListingDialog(shouldShowDialog: MutableState<Boolean>, onSubmit: (String,
                         singleLine = true
                     )
 
+                    Button(
+                        onClick = {
+                            photoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        }
+                    ) {
+                        Text(text = "Add Picture")
+                    }
                 }
             },
             confirmButton = {
