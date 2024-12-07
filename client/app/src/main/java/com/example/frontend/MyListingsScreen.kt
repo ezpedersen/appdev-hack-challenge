@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.frontend.data.Listing
 import com.example.frontend.data.User
+import com.example.frontend.data.UserRepository
 import com.example.frontend.ui.LoginViewModel
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.BgWhite
@@ -66,9 +67,10 @@ import java.sql.Date
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
-fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel()) {
+fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel(),
+                     UserRepository : UserRepository
+                    ) {
 
     val provider = GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
