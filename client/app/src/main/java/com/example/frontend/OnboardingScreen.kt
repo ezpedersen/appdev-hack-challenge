@@ -157,19 +157,19 @@ fun OnboardingScreen(
             onClick =  {
                 scope.launch {
                     loginViewModel.onComplete()
-                    userRepository.createUser(
-                        User(
-                            loginViewModel.getUId(),
-                            loginViewModel.getDisplayName(),
-                            loginViewModel.getProfileIconUrl(),
-                            netId,
-                            bio,
-                            emptyList<Listing>(),
-                            emptyList<Listing>(),
-                            emptyList<User>(),
-                            emptyList<FriendRequest>()
-                        )
-                    )
+//                    userRepository.createUser(
+//                        User(
+//                            loginViewModel.getUId(),
+//                            loginViewModel.getDisplayName(),
+//                            loginViewModel.getProfileIconUrl(),
+//                            netId,
+//                            bio,
+//                            emptyList<Listing>(),
+//                            emptyList<Listing>(),
+//                            emptyList<User>(),
+//                            emptyList<FriendRequest>()
+//                        )
+//                    )
                 }
 
            },

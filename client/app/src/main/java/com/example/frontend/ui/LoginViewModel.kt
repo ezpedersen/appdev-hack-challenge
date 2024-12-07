@@ -67,7 +67,4 @@ class LoginViewModel @Inject constructor(
         googleAuthRepository.signOutFirebaseAuth()
         curScreen.value = "LoginScreen"
     }
-
-
-
 }

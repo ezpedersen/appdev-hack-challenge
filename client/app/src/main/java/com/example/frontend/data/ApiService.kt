@@ -23,7 +23,7 @@
 
         @Headers("Accept: application/json")
         @POST("/user")
-        suspend fun createUser(@Body user: User): Call<User>
+        suspend fun createUser(@Body user: User): Response<Unit>
 
         @Headers("Accept: application/json")
         @DELETE("/user")
