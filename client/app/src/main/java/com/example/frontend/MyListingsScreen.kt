@@ -97,7 +97,7 @@ fun MyListingsScreen(
 
     val shouldShowDialog = remember { mutableStateOf(false) }
 
-    var listing: Listing=  Listing("empty", Date.valueOf(LocalDate.now().toString()), "empty", "empty", "", proxyUser, proxyUser)
+    var listing: Listing=  Listing("Screwdriver", Date.valueOf(LocalDate.now().toString()), "noImage", "philips head", "tool", proxyUser, proxyUser)
 
     if (shouldShowDialog.value) {
         AddListingDialog(
@@ -185,12 +185,12 @@ fun ListingTab(listing: Listing) {
         .fillMaxWidth()
     ) {
         Column{
-            Text(text = listing.name, color = Color.DarkGray)
-            Text(text = listing.createdAt.toString(), color = Color.DarkGray)
-            Text(text = listing.description, color = Color.DarkGray)
-            Text(text = listing.type, color = Color.DarkGray)
-            Text(text = listing.owner.name, color = Color.DarkGray)
-            Text(text = listing.acceptedBy.name, color = Color.DarkGray)
+            Text(text = "Item: ${listing.name}", color = Color.DarkGray)
+            Text(text = "Item posted: ${listing.createdAt}", color = Color.DarkGray)
+            Text(text = "Description: ${listing.description}", color = Color.DarkGray)
+            Text(text = "Listing type: ${listing.type}", color = Color.DarkGray)
+            Text(text = "Provider: ${listing.owner.name}", color = Color.DarkGray)
+            Text(text = "Accepted by: ${listing.acceptedBy.name}", color = Color.DarkGray)
         }
     }
 }
