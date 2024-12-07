@@ -164,10 +164,10 @@ fun OnboardingScreen(
                             loginViewModel.getProfileIconUrl(),
                             netId,
                             bio,
-                            listOf(),
-                            listOf(),
-                            listOf(),
-                            listOf()
+                            emptyList<Listing>(),
+                            emptyList<Listing>(),
+                            emptyList<User>(),
+                            emptyList<FriendRequest>()
                         )
                     )
                 }

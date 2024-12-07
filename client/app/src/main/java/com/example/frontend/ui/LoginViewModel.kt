@@ -25,6 +25,16 @@ class LoginViewModel @Inject constructor(
     val currentScreen: State<String> = curScreen
     var infoEntered = mutableStateOf(false)
 
+    init {
+        curScreen.value = if (googleAuthRepository.auth.currentUser != null && infoEntered.value) {
+            "BaseScreen"
+        } else if (!infoEntered.value) {
+            "OnboardingScreen"
+        } else {
+            "LoginScreen"
+        }
+    }
+
     fun onSignIn(googleIdTokenCredential: GoogleIdTokenCredential) {
         googleAuthRepository.addToFirebaseAuth(googleIdTokenCredential) { success ->
             if (success) {
@@ -58,14 +68,6 @@ class LoginViewModel @Inject constructor(
         curScreen.value = "LoginScreen"
     }
 
-    init {
-        curScreen.value = if (googleAuthRepository.auth.currentUser != null && infoEntered.value) {
-            "BaseScreen"
-        } else if (!infoEntered.value) {
-            "OnboardingScreen"
-        } else {
-            "LoginScreen"
-        }
-    }
+
 
 }
