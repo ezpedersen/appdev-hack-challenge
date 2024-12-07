@@ -112,7 +112,7 @@ fun ListingsScreen() {
 fun Listing(index: Int) {
     Box(modifier = Modifier
         .height(200.dp)
-        .shadow(elevation = 4.dp, shape = RoundedCornerShape(10.dp), spotColor = Color.Gray)
+        .shadow(elevation = 5.dp, shape = RoundedCornerShape(10.dp), spotColor = Color.Gray)
         .padding(5.dp)
         .clip(RoundedCornerShape(10.dp))
         .background(BgWhite)

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -24,6 +25,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -128,12 +130,15 @@ fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel()) {
             )
         },
         floatingActionButton = {
-            FloatingActionButton( onClick = {
+            ExtendedFloatingActionButton( onClick = {
                 shouldShowDialog.value = true
             },
                 modifier = Modifier
-                    .size(40.dp)
-                    .background(color = MainBlue)
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(3.dp))
+                    .padding(10.dp),
+                containerColor = MainBlue
+
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
@@ -170,7 +175,7 @@ fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel()) {
 fun ListingTab(listing: Listing) {
     Box(modifier = Modifier
         .height(200.dp)
-        .shadow(elevation = 4.dp, shape = RoundedCornerShape(10.dp), spotColor = Color.Gray)
+        .shadow(elevation = 5.dp, shape = RoundedCornerShape(10.dp), spotColor = Color.Gray)
         .padding(5.dp)
         .clip(RoundedCornerShape(10.dp))
         .background(BgWhite)

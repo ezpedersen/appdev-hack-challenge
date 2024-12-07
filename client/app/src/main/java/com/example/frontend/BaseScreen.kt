@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
@@ -35,23 +38,26 @@ import com.example.frontend.ui.LoginViewModel
 import com.example.frontend.ui.theme.AltBlue
 import com.example.frontend.ui.theme.MainBlue
 
-sealed class ScreenType(val route: String, val icon: ImageVector, val label: String) {
+sealed class ScreenType(val route: String, val iconIs: ImageVector, val iconNot: ImageVector, val label: String) {
     data object ProfileScreen : ScreenType(
         route = "ProfileScreen",
-        icon = Icons.Outlined.Person,
+        iconIs = Icons.Filled.Person,
+        iconNot = Icons.Outlined.Person,
         label = "Profile"
     )
 
     data object ListingsScreen : ScreenType(
         route = "ListingsScreen",
-        icon = Icons.Outlined.Home,
+        iconIs = Icons.Filled.Home,
+        iconNot = Icons.Outlined.Home,
         label = "Listings"
     )
 
     data object MyListingsScreen : ScreenType(
         route = "MyListingsScreen",
-        icon = Icons.Outlined.AddCircleOutline,
-        label = "My"
+        iconIs = Icons.Filled.AddCircle,
+        iconNot = Icons.Outlined.AddCircleOutline,
+        label = "Mine"
     )
 }
 
@@ -75,8 +81,9 @@ fun BaseScreen(loginViewModel : LoginViewModel) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 tabs.forEach { screen ->
+                    val isSelected = currentDestination?.route == screen.route
                     NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        selected = false,
                         onClick = {
                             navController.navigate(screen.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
@@ -88,11 +95,17 @@ fun BaseScreen(loginViewModel : LoginViewModel) {
                         },
                         icon = {
                             Icon(
-                                imageVector = screen.icon,
-                                contentDescription = null
+                                imageVector = if (isSelected) screen.iconIs else screen.iconNot,
+                                contentDescription = null,
+                                tint = if (isSelected) Color.White else Color.LightGray
                             )
                         },
-                        label = { Text(text = screen.label) }
+                        label = {
+                            Text(
+                                text = screen.label,
+                                color = if (isSelected) Color.White else Color.LightGray
+                            )
+                        }
                     )
                 }
             }
