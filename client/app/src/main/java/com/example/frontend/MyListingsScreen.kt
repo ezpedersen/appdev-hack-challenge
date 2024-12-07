@@ -133,7 +133,7 @@ fun MyListingsScreen(logOutModel: LoginViewModel = hiltViewModel()) {
             },
                 modifier = Modifier
                     .size(40.dp)
-
+                    .background(color = MainBlue)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,

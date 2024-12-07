@@ -23,13 +23,19 @@ class LoginViewModel @Inject constructor(
 
     private val curScreen = mutableStateOf("LoginScreen")
     val currentScreen: State<String> = curScreen
+    var infoEntered = mutableStateOf(false)
 
     fun onSignIn(googleIdTokenCredential: GoogleIdTokenCredential) {
         googleAuthRepository.addToFirebaseAuth(googleIdTokenCredential) { success ->
             if (success) {
-                curScreen.value = "BaseScreen"
+                curScreen.value = "OnboardingScreen"
             }
         }
+    }
+
+    fun onComplete() {
+        infoEntered.value = true
+        curScreen.value = "BaseScreen"
     }
 
     fun getProfileIconUrl() : String {
@@ -42,14 +48,21 @@ class LoginViewModel @Inject constructor(
         return user?.displayName.toString()
     }
 
+    fun getUId() : String{
+        val user = FirebaseAuth.getInstance().currentUser
+        return user?.uid.toString()
+    }
+
     fun signOut() {
         googleAuthRepository.signOutFirebaseAuth()
         curScreen.value = "LoginScreen"
     }
 
     init {
-        curScreen.value = if (googleAuthRepository.auth.currentUser != null) {
+        curScreen.value = if (googleAuthRepository.auth.currentUser != null && infoEntered.value == true) {
             "BaseScreen"
+        } else if (!infoEntered.value) {
+            "OnboardingScreen"
         } else {
             "LoginScreen"
         }

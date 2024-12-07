@@ -57,6 +57,10 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
                         LoginScreen(loginViewModel = loginViewModel, navController = navController)
                     }
+                    "OnboardingScreen" -> {
+                        val navController = rememberNavController()
+                        OnboardingScreen(loginViewModel = loginViewModel, navController = navController)
+                    }
                     "BaseScreen" -> BaseScreen(loginViewModel = loginViewModel)
                 }
 
