@@ -72,7 +72,7 @@ fun ProfileScreen(
     val friends = viewState.friendList
     val profilePic = logOutModel.getProfileIconUrl()
 
-    Column(modifier = Modifier.fillMaxSize().background(BgWhite),
+    Column(modifier = Modifier.fillMaxSize().background(BgWhite).padding(40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -83,7 +83,7 @@ fun ProfileScreen(
                         model = it,
                         contentDescription = "Profile Icon",
                         modifier = Modifier
-                            .size(100.dp)
+                            .size(200.dp)
                             .background(AltBlue)
                             .clip(CircleShape)
                             .padding(8.dp),
@@ -92,18 +92,18 @@ fun ProfileScreen(
                 }
                 Spacer(modifier = Modifier.padding(36.dp))
 
-                Text(text = "Username: $user", fontSize = 24.sp)
+                Text(text = "Username: $user", fontSize = 24.sp, color = Color.DarkGray)
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
-                Text(text = "NetId: $netId", fontSize = 20.sp)
+                Text(text = "NetId: $netId", fontSize = 20.sp, color = Color.DarkGray)
 
                 Spacer(modifier = Modifier.padding(10.dp))
 
-                Text(text = "Bio: $bio", fontSize = 20.sp)
+                Text(text = "Bio: $bio", fontSize = 20.sp, color = Color.DarkGray)
 
                 Spacer(modifier = Modifier.padding(36.dp))
-                
+
                 SignOutButton(
                     signOutFirebase = {
                         logOutModel.signOut()
