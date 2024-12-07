@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val userApi : UserApi,
+    private val userApi : ApiService,
 )  {
     suspend fun getUserById(netId : String): Response<User> {
         return userApi.getUserById(netId)

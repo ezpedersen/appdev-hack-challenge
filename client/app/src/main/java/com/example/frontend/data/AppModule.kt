@@ -25,11 +25,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMyApi(moshi : Moshi): UserApi {
+    fun provideMyApi(moshi : Moshi): ApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
             .build()
-            .create(UserApi::class.java)
+            .create(ApiService::class.java)
     }
 }

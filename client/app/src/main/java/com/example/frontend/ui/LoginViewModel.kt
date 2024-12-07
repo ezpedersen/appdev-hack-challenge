@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun getProfileIconUrl() : String{
+    fun getProfileIconUrl() : String {
         val user = FirebaseAuth.getInstance().currentUser
         return user?.photoUrl.toString()
     }
